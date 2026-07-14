@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creative Coding Retro Games Arcade</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Style Sheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Grid Backdrop Overlay -->
+    <div class="grid-backdrop"></div>
+
+    <div class="app-wrapper">
+        <!-- Header -->
+        <header class="hero-section">
+            <div class="arcade-logo">
+                <i class="fa-solid fa-gamepad logo-icon"></i>
+            </div>
+            <h1>RETRO ARCADE</h1>
+            <p class="subtitle">
+                A premium collection of globally recognized games remade with modern fluid animations, neon aesthetics, and responsive control overlays.
+            </p>
+            <div class="header-badges">
+                <span class="badge"><i class="fa-solid fa-microchip"></i> 1 Game Active</span>
+                <span class="badge"><i class="fa-solid fa-bolt"></i> Neon Styles</span>
+            </div>
+        </header>
+
+        <!-- Main Games Directory -->
+        <main class="games-grid">
+            
+            <!-- Game 1: Tetris -->
+            <div class="card card-magenta">
+                <div class="card-header">
+                    <i class="fa-solid fa-cubes card-icon"></i>
+                    <span class="category-tag">Puzzle Classics</span>
+                </div>
+                <h3>Neon Tetris</h3>
+                <p>
+                    Slide and rotate tetrominoes in a cybernetic grid. Clear lines to trigger particle bursts and watch fall speeds accelerate.
+                </p>
+                <a href="tetris/index.html" class="launch-btn">PLAY NOW <i class="fa-solid fa-play"></i></a>
+            </div>
+
+            <!-- Future Game Placeholders (sleek glass mockups) -->
+            <div class="card card-disabled">
+                <div class="card-header">
+                    <i class="fa-solid fa-calculator card-icon"></i>
+                    <span class="category-tag">Puzzle Classics</span>
+                </div>
+                <h3>Glass 2048</h3>
+                <p>
+                    Merge sliding numeric values to reach the 2048 threshold. Built with custom bounce transitions and color temperature grids.
+                </p>
+                <span class="coming-soon">COMING SOON</span>
+            </div>
+
+            <div class="card card-disabled">
+                <div class="card-header">
+                    <i class="fa-solid fa-flag card-icon"></i>
+                    <span class="category-tag">Logic Systems</span>
+                </div>
+                <h3>Holo Minesweeper</h3>
+                <p>
+                    Scan cells for hidden coordinate mines. Sweep fields using dynamic flags overlays and real-time radar sonar sweeps.
+                </p>
+                <span class="coming-soon">COMING SOON</span>
+            </div>
+
+        </main>
+
+        <!-- Footer -->
+        <footer>
+            <p>Designed and Programmed by <span class="highlight">Shubham Shandilya</span> &copy; 2026</p>
+            <p class="tagline">Interactive Gaming through Creative Mathematics</p>
+        </footer>
+    </div>
+</body>
+</html>

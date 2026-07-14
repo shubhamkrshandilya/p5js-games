@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Tetris - Classic Retro Arcade</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Style Sheet -->
+    <link rel="stylesheet" href="style.css">
+    <!-- p5.js Core -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+</head>
+<body>
+    <div class="game-wrapper">
+        <!-- Main Game Workspace -->
+        <main class="workspace">
+            <!-- Left Sidebar (Hold Piece) -->
+            <div class="side-hud left-hud glass">
+                <div class="hud-box">
+                    <h4>HOLD</h4>
+                    <div class="preview-container" id="hold-container">
+                        <!-- Hold preview rendered by sketch -->
+                    </div>
+                </div>
+                
+                <div class="hud-box score-box">
+                    <h4>SCORE</h4>
+                    <span class="hud-value" id="score-val">000000</span>
+                </div>
+                <div class="hud-box">
+                    <h4>LINES</h4>
+                    <span class="hud-value" id="lines-val">0</span>
+                </div>
+            </div>
+
+            <!-- Central Canvas Viewport -->
+            <div class="canvas-container glass" id="canvas-parent">
+                <div class="mode-badge"><i class="fa-solid fa-cubes"></i> NEON TETRIS</div>
+                <!-- Canvas loaded dynamically -->
+                
+                <!-- Game Over Overlay -->
+                <div class="game-over-overlay" id="game-over-screen">
+                    <h2 class="retro-blink">GAME OVER</h2>
+                    <p>Final Score: <span id="final-score">0</span></p>
+                    <button class="btn btn-primary" id="restart-btn"><i class="fa-solid fa-arrows-rotate"></i> PLAY AGAIN</button>
+                </div>
+            </div>
+
+            <!-- Right Sidebar (Next Piece) -->
+            <div class="side-hud right-hud glass">
+                <div class="hud-box">
+                    <h4>NEXT</h4>
+                    <div class="preview-container" id="next-container">
+                        <!-- Next preview rendered by sketch -->
+                    </div>
+                </div>
+                
+                <div class="hud-box">
+                    <h4>LEVEL</h4>
+                    <span class="hud-value" id="level-val">1</span>
+                </div>
+                <div class="hud-box">
+                    <h4>HIGH SCORE</h4>
+                    <span class="hud-value" id="highscore-val">000000</span>
+                </div>
+            </div>
+        </main>
+
+        <!-- Mobile Touch Controls Layout Overlay (glowing vector circles) -->
+        <div class="mobile-controls-bar">
+            <button class="control-btn" id="ctrl-left" aria-label="Move Left"><i class="fa-solid fa-arrow-left"></i></button>
+            <button class="control-btn" id="ctrl-rotate" aria-label="Rotate"><i class="fa-solid fa-arrows-rotate"></i></button>
+            <button class="control-btn" id="ctrl-right" aria-label="Move Right"><i class="fa-solid fa-arrow-right"></i></button>
+            <button class="control-btn" id="ctrl-soft" aria-label="Soft Drop"><i class="fa-solid fa-arrow-down"></i></button>
+            <button class="control-btn" id="ctrl-hard" aria-label="Hard Drop"><i class="fa-solid fa-angles-down"></i></button>
+            <button class="control-btn" id="ctrl-hold" aria-label="Hold Swap"><i class="fa-solid fa-shuffle"></i></button>
+        </div>
+    </div>
+
+    <!-- Simulation Code -->
+    <script src="sketch.js"></script>
+</body>
+</html>
