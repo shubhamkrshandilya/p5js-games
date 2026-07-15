@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Chess - Classic Retro Arcade</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Style Sheet -->
+    <link rel="stylesheet" href="style.css">
+    <!-- p5.js Core -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+    <!-- chess.js Logic Engine -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+</head>
+<body>
+    <div class="game-wrapper">
+        <!-- Main Game Workspace -->
+        <main class="workspace">
+            <!-- Left Sidebar (Configuration & Turn Monitor) -->
+            <div class="side-hud left-hud glass">
+                <div class="hud-box">
+                    <h4>SYSTEM STATUS</h4>
+                    <span class="hud-value status-neon" id="status-val">YOUR TURN</span>
+                </div>
+                
+                <div class="hud-box select-box">
+                    <h4>AI LEVEL</h4>
+                    <select id="difficulty-select" class="form-select">
+                        <option value="1">L1: NEURAL NET (EASY)</option>
+                        <option value="2" selected>L2: MINIMAX (MEDIUM)</option>
+                        <option value="3">L3: DEEP BLUE (HARD)</option>
+                    </select>
+                </div>
+
+                <div class="hud-box select-box">
+                    <h4>PLAYER SIDE</h4>
+                    <div class="side-toggle">
+                        <button class="btn-side active" id="side-white">WHITE</button>
+                        <button class="btn-side" id="side-black">BLACK</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Central Canvas Viewport -->
+            <div class="canvas-container glass" id="canvas-parent">
+                <div class="mode-badge"><i class="fa-solid fa-chess"></i> CYBER CHESS</div>
+                
+                <!-- Game Over Overlay -->
+                <div class="game-over-overlay" id="game-over-screen">
+                    <h2 class="retro-blink" id="game-over-title">CHECKMATE</h2>
+                    <p id="game-over-msg">AI wins the simulation.</p>
+                    <button class="btn btn-primary" id="restart-btn-over"><i class="fa-solid fa-arrows-rotate"></i> RE-ENGAGE</button>
+                </div>
+
+            </div>
+
+            <!-- Right Sidebar (Captured Tray & Actions) -->
+            <div class="side-hud right-hud glass">
+                <!-- Captured Trays -->
+                <div class="hud-box tray-box">
+                    <h4>CAPTURED BY AI</h4>
+                    <div class="captured-tray" id="tray-black">
+                        <!-- Captured white pieces list -->
+                    </div>
+                </div>
+                <div class="hud-box tray-box">
+                    <h4>CAPTURED BY YOU</h4>
+                    <div class="captured-tray" id="tray-white">
+                        <!-- Captured black pieces list -->
+                    </div>
+                </div>
+
+                <button class="btn btn-action" id="hint-btn" style="margin-bottom: 0.5rem; background: rgba(0, 242, 254, 0.08); border: 1px solid rgba(0, 242, 254, 0.2); color: var(--neon-cyan);">
+                    <i class="fa-solid fa-lightbulb"></i> GET ADVISORY
+                </button>
+
+                <button class="btn btn-action" id="rules-btn" onclick="document.getElementById('rules-modal').style.display='flex'" style="margin-bottom: 0.5rem; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-glass); color: var(--text-main);">
+                    <i class="fa-solid fa-circle-question"></i> HOW TO PLAY
+                </button>
+
+                <button class="btn btn-primary" id="restart-btn">
+                    <i class="fa-solid fa-arrows-rotate"></i> RESET SIMULATION
+                </button>
+            </div>
+        </main>
+    </div>
+
+    <!-- Rules Modal Overlay -->
+    <div class="rules-modal glass" id="rules-modal">
+        <div class="rules-content">
+            <button class="rules-close" id="rules-close-btn" onclick="document.getElementById('rules-modal').style.display='none'">&times;</button>
+            <h3>Chess Rules</h3>
+            <div class="rules-text">
+                <p><strong>1. Pieces:</strong> Pawns move 1 square forward (or 2 on start). Knights leap in L-shapes. Bishops slide diagonally. Rooks slide orthogonally. Queens move anywhere. Kings move 1 square.</p>
+                <p><strong>2. Check:</strong> If your King is threatened, you must block, capture the attacker, or move your King to safety immediately.</p>
+                <p><strong>3. Checkmate:</strong> If a King is in check and has no legal moves to escape, it is checkmated and the game ends.</p>
+                <p><strong>4. Castling:</strong> A special king/rook defense move. Select the King, then move it 2 squares towards the Rook to execute.</p>
+            </div>
+            <a href="https://en.wikipedia.org/wiki/Rules_of_chess" target="_blank" class="btn btn-primary rules-link">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i> Full Wikipedia Rules
+            </a>
+        </div>
+    </div>
+
+    <!-- Simulation Code -->
+    <script src="sketch.js"></script>
+</body>
+</html>

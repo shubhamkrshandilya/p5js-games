@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glass Backgammon - Classic Retro Arcade</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Style Sheet -->
+    <link rel="stylesheet" href="style.css">
+    <!-- p5.js Core -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+</head>
+<body>
+    <div class="game-wrapper">
+        <!-- Main Game Workspace -->
+        <main class="workspace">
+            <!-- Left Sidebar -->
+            <div class="side-hud left-hud glass">
+                <div class="hud-box">
+                    <h4>SYSTEM TURN</h4>
+                    <span class="hud-value status-neon" id="status-val">ROLL DICE</span>
+                </div>
+                
+                <div class="hud-box dice-box">
+                    <h4>DICE ROLL</h4>
+                    <div class="dice-container">
+                        <span class="die-val" id="die1-val">-</span>
+                        <span class="die-val" id="die2-val">-</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Central Canvas Viewport -->
+            <div class="canvas-container glass" id="canvas-parent">
+                <div class="mode-badge"><i class="fa-solid fa-dice"></i> GLASS BACKGAMMON</div>
+                
+                <!-- Game Over Overlay -->
+                <div class="game-over-overlay" id="game-over-screen">
+                    <h2 class="retro-blink" id="game-over-title">SYSTEM DEFECT</h2>
+                    <p id="game-over-msg">Player 1 wins!</p>
+                    <button class="btn btn-primary" id="restart-btn-over"><i class="fa-solid fa-arrows-rotate"></i> RE-DEPLOY</button>
+                </div>
+
+            </div>
+
+            <!-- Right Sidebar -->
+            <div class="side-hud right-hud glass">
+                <button class="btn btn-primary" id="roll-btn">
+                    <i class="fa-solid fa-dice"></i> ROLL DICE
+                </button>
+                
+                <div class="hud-box bar-box">
+                    <h4>CENTRAL BAR</h4>
+                    <p class="bar-stats">YOU (CYAN): <span class="hud-value" id="player-bar-val">0</span></p>
+                    <p class="bar-stats">AI (MAGENTA): <span class="hud-value" id="ai-bar-val" style="color:var(--neon-magenta)">0</span></p>
+                </div>
+
+                <div class="hud-box off-box">
+                    <h4>BEARING OFF</h4>
+                    <p class="bar-stats">YOU: <span class="hud-value" id="player-off-val">0</span>/15</p>
+                    <p class="bar-stats">AI: <span class="hud-value" id="ai-off-val" style="color:var(--neon-magenta)">0</span>/15</p>
+                </div>
+
+                <button class="btn btn-action" id="hint-btn" style="margin-bottom: 0.5rem; background: rgba(255, 0, 127, 0.08); border: 1px solid rgba(255, 0, 127, 0.2); color: var(--neon-cyan);">
+                    <i class="fa-solid fa-lightbulb"></i> GET ADVISORY
+                </button>
+
+                <button class="btn btn-action" id="rules-btn" onclick="document.getElementById('rules-modal').style.display='flex'" style="margin-bottom: 0.5rem; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-glass); color: var(--text-main);">
+                    <i class="fa-solid fa-circle-question"></i> HOW TO PLAY
+                </button>
+
+                <button class="btn btn-primary" id="restart-btn">
+                    <i class="fa-solid fa-arrows-rotate"></i> REBOOT SYSTEMS
+                </button>
+            </div>
+        </main>
+    </div>
+
+    <!-- Rules Modal Overlay (Overlay outside wrapper to prevent clipping) -->
+    <div class="rules-modal glass" id="rules-modal">
+        <div class="rules-content">
+            <button class="rules-close" id="rules-close-btn" onclick="document.getElementById('rules-modal').style.display='none'">&times;</button>
+            <h3>Backgammon Rules</h3>
+            <div class="rules-text">
+                <p><strong>1. Direction:</strong> You play as <strong>Cyan</strong>. Your checkers move left-to-right along the top row (from top-left point 23 to top-right point 12) and wrap down to move left-to-right along the bottom row to your home board (points 5-0). The <strong>Magenta AI</strong> moves right-to-left in the opposite direction.</p>
+                <p><strong>2. Safe Points:</strong> A point with 2 or more checkers of the same color is secured. Opponent checkers cannot land on it.</p>
+                <p><strong>3. Blot & Bar:</strong> A point with exactly 1 checker is a <strong>Blot</strong>. Landing on an opponent blot hits it, sending it to the central Bar. If you have checkers on the Bar, you must enter them into the opponent's home board (points 18-23) first.</p>
+                <p><strong>4. Bearing Off:</strong> Once all 15 of your checkers reach your home board (points 5-0), you can clear them from the board. The first to bear off all 15 checkers wins.</p>
+            </div>
+            <a href="https://en.wikipedia.org/wiki/Backgammon" target="_blank" class="btn btn-primary rules-link">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i> Full Wikipedia Rules
+            </a>
+        </div>
+    </div>
+
+    <!-- Simulation Code -->
+    <script src="sketch.js"></script>
+</body>
+</html>

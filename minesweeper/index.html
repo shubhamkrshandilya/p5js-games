@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Holo Minesweeper - Classic Retro Arcade</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Style Sheet -->
+    <link rel="stylesheet" href="style.css">
+    <!-- p5.js Core -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+</head>
+<body>
+    <div class="game-wrapper">
+        <!-- Main Game Workspace -->
+        <main class="workspace">
+            <!-- Left Sidebar (Stats and Controls) -->
+            <div class="side-hud left-hud glass">
+                <div class="hud-box">
+                    <h4>RADAR SCAN</h4>
+                    <span class="hud-value" id="radar-val">SCANNING...</span>
+                </div>
+                <div class="hud-box">
+                    <h4>TIMER</h4>
+                    <span class="hud-value" id="timer-val">000</span>
+                </div>
+                <div class="hud-box">
+                    <h4>SAFE FIELD</h4>
+                    <span class="hud-value" id="safe-val">0%</span>
+                </div>
+            </div>
+
+            <!-- Central Canvas Viewport -->
+            <div class="canvas-container glass" id="canvas-parent">
+                <div class="mode-badge"><i class="fa-solid fa-flag"></i> HOLO MINESWEEPER</div>
+                
+                <!-- Game Over Overlay -->
+                <div class="game-over-overlay" id="game-over-screen">
+                    <h2 class="retro-blink" id="game-over-title">GRID COMPROMISED</h2>
+                    <p>Time Elapsed: <span id="final-time">0</span>s</p>
+                    <button class="btn btn-primary" id="restart-btn-over"><i class="fa-solid fa-arrows-rotate"></i> RE-DEPLOY</button>
+                </div>
+            </div>
+
+            <!-- Right Sidebar (Inventory and Actions) -->
+            <div class="side-hud right-hud glass">
+                <div class="hud-box">
+                    <h4>MINES DETECTED</h4>
+                    <span class="hud-value" id="mines-val">20</span>
+                </div>
+                <div class="hud-box">
+                    <h4>FLAGS PLANTED</h4>
+                    <span class="hud-value" id="flags-val">0</span>
+                </div>
+                
+                <!-- Mode Toggle (Reveal vs Flag) for Mobile Touch screens -->
+                <div class="toggle-container">
+                    <button class="btn btn-toggle active" id="mode-reveal">
+                        <i class="fa-solid fa-burst"></i> SWEEP
+                    </button>
+                    <button class="btn btn-toggle" id="mode-flag">
+                        <i class="fa-solid fa-flag"></i> MARKER
+                    </button>
+                </div>
+
+                <button class="btn btn-primary" id="restart-btn">
+                    <i class="fa-solid fa-arrows-rotate"></i> SYSTEM RESET
+                </button>
+            </div>
+        </main>
+
+        <!-- Mobile Touch Controls Layout Overlay -->
+        <div class="mobile-controls-bar">
+            <button class="control-btn" id="ctrl-sweep-mode" aria-label="Toggle Sweep Mode"><i class="fa-solid fa-burst"></i> SWEEP</button>
+            <button class="control-btn" id="ctrl-flag-mode" aria-label="Toggle Marker Mode"><i class="fa-solid fa-flag"></i> MARKER</button>
+            <button class="control-btn" id="ctrl-reset" aria-label="System Reset"><i class="fa-solid fa-arrows-rotate"></i> RESET</button>
+        </div>
+    </div>
+
+    <!-- Simulation Code -->
+    <script src="sketch.js"></script>
+</body>
+</html>

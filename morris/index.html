@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Holo Morris - Classic Retro Arcade</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Style Sheet -->
+    <link rel="stylesheet" href="style.css">
+    <!-- p5.js Core -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+</head>
+<body>
+    <div class="game-wrapper">
+        <!-- Main Game Workspace -->
+        <main class="workspace">
+            <!-- Left Sidebar -->
+            <div class="side-hud left-hud glass">
+                <div class="hud-box">
+                    <h4>GAME STATUS</h4>
+                    <span class="hud-value status-neon" id="status-val">YOUR TURN</span>
+                </div>
+                
+                <div class="hud-box">
+                    <h4>CURRENT PHASE</h4>
+                    <span class="hud-value" id="phase-val">PLACING</span>
+                </div>
+            </div>
+
+            <!-- Central Canvas Viewport -->
+            <div class="canvas-container glass" id="canvas-parent">
+                <div class="mode-badge"><i class="fa-solid fa-circle-nodes"></i> HOLO MORRIS</div>
+                
+                <!-- Game Over Overlay -->
+                <div class="game-over-overlay" id="game-over-screen">
+                    <h2 class="retro-blink" id="game-over-title">MILL SHUTDOWN</h2>
+                    <p id="game-over-msg">Player 1 wins!</p>
+                    <button class="btn btn-primary" id="restart-btn-over"><i class="fa-solid fa-arrows-rotate"></i> RE-DEPLOY</button>
+                </div>
+
+            </div>
+
+            <!-- Right Sidebar -->
+            <div class="side-hud right-hud glass">
+                <div class="hud-box">
+                    <h4>PIECES REMAINING</h4>
+                    <div class="pieces-count-hud">
+                        <p>YOU (CYAN): <span class="hud-value" id="player-pieces-val">9</span></p>
+                        <p>AI (MAGENTA): <span class="hud-value" id="ai-pieces-val" style="color:var(--neon-magenta)">9</span></p>
+                    </div>
+                </div>
+
+                <button class="btn btn-action" id="hint-btn" style="margin-bottom: 0.5rem; background: rgba(176, 38, 255, 0.08); border: 1px solid rgba(176, 38, 255, 0.2); color: var(--neon-cyan);">
+                    <i class="fa-solid fa-lightbulb"></i> GET ADVISORY
+                </button>
+
+                <button class="btn btn-action" id="rules-btn" onclick="document.getElementById('rules-modal').style.display='flex'" style="margin-bottom: 0.5rem; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-glass); color: var(--text-main);">
+                    <i class="fa-solid fa-circle-question"></i> HOW TO PLAY
+                </button>
+
+                <button class="btn btn-primary" id="restart-btn">
+                    <i class="fa-solid fa-arrows-rotate"></i> SYSTEM RESET
+                </button>
+            </div>
+        </main>
+    </div>
+
+    <!-- Rules Modal Overlay -->
+    <div class="rules-modal glass" id="rules-modal">
+        <div class="rules-content">
+            <button class="rules-close" id="rules-close-btn" onclick="document.getElementById('rules-modal').style.display='none'">&times;</button>
+            <h3>Nine Men's Morris Rules</h3>
+            <div class="rules-text">
+                <p><strong>1. Phase 1 (Placing):</strong> Players take turns placing their 9 stones on empty grid intersections. Try to form mills!</p>
+                <p><strong>2. Phase 2 (Moving):</strong> Once all stones are placed, take turns sliding a stone along grid lines to an adjacent empty intersection.</p>
+                <p><strong>3. Phase 3 (Flying):</strong> If a player is reduced to exactly 3 stones, they can fly their stones to any empty intersection on the board.</p>
+                <p><strong>4. Mills & Capture:</strong> Aligning 3 of your stones in a straight line forms a Mill. This allows you to capture one of your opponent's stones (cannot capture stones in a mill unless only mills remain).</p>
+            </div>
+            <a href="https://en.wikipedia.org/wiki/Nine_men%27s_morris" target="_blank" class="btn btn-primary rules-link">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i> Full Wikipedia Rules
+            </a>
+        </div>
+    </div>
+
+    <!-- Simulation Code -->
+    <script src="sketch.js"></script>
+</body>
+</html>

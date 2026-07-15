@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Holo Asteroids - Classic Retro Arcade</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Style Sheet -->
+    <link rel="stylesheet" href="style.css">
+    <!-- p5.js Core -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+</head>
+<body>
+    <div class="game-wrapper">
+        <!-- Main Game Workspace -->
+        <main class="workspace">
+            <!-- Left Sidebar -->
+            <div class="side-hud left-hud glass">
+                <div class="hud-box">
+                    <h4>SYSTEM ALERT</h4>
+                    <span class="hud-value status-alert" id="status-val">ALL SYSTEMS NOMINAL</span>
+                </div>
+                
+                <div class="hud-box shield-box">
+                    <h4>SHIELD CAP</h4>
+                    <div class="shield-bar-container">
+                        <div class="shield-bar-fill" id="shield-fill" style="width: 100%;"></div>
+                    </div>
+                    <span class="hud-value" id="shield-val">100%</span>
+                </div>
+
+                <div class="hud-box">
+                    <h4>SECTOR LAYER</h4>
+                    <span class="hud-value" id="level-val">1</span>
+                </div>
+            </div>
+
+            <!-- Central Canvas Viewport -->
+            <div class="canvas-container glass" id="canvas-parent">
+                <div class="mode-badge"><i class="fa-solid fa-rocket"></i> HOLO ASTEROIDS</div>
+                
+                <!-- Game Over Overlay -->
+                <div class="game-over-overlay" id="game-over-screen">
+                    <h2 class="retro-blink" id="game-over-title">HULL DETONATED</h2>
+                    <p>Final Score: <span id="final-score">0</span></p>
+                    <button class="btn btn-primary" id="restart-btn-over"><i class="fa-solid fa-arrows-rotate"></i> RE-DEPLOY</button>
+                </div>
+            </div>
+
+            <!-- Right Sidebar -->
+            <div class="side-hud right-hud glass">
+                <div class="hud-box">
+                    <h4>TELEMETRY</h4>
+                    <span class="hud-value" id="score-val">0</span>
+                </div>
+                
+                <div class="hud-box">
+                    <h4>LIVES</h4>
+                    <div class="lives-container" id="lives-val">
+                        <!-- Lives icons rendered in HTML -->
+                        <i class="fa-solid fa-rocket life-icon"></i>
+                        <i class="fa-solid fa-rocket life-icon"></i>
+                        <i class="fa-solid fa-rocket life-icon"></i>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" id="restart-btn">
+                    <i class="fa-solid fa-arrows-rotate"></i> FLIGHT SYSTEM REBOOT
+                </button>
+            </div>
+        </main>
+
+        <!-- Mobile Touch Controls Layout Overlay -->
+        <div class="mobile-controls-bar">
+            <button class="control-btn" id="ctrl-left" aria-label="Rotate Left"><i class="fa-solid fa-rotate-left"></i></button>
+            <button class="control-btn" id="ctrl-thrust" aria-label="Thrust Forward"><i class="fa-solid fa-angles-up"></i> THRUST</button>
+            <button class="control-btn" id="ctrl-right" aria-label="Rotate Right"><i class="fa-solid fa-rotate-right"></i></button>
+            <button class="control-btn" id="ctrl-fire" aria-label="Fire Lasers"><i class="fa-solid fa-crosshairs"></i> FIRE</button>
+        </div>
+    </div>
+
+    <!-- Simulation Code -->
+    <script src="sketch.js"></script>
+</body>
+</html>

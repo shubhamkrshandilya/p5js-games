@@ -48,6 +48,8 @@ let isGameOver = false;
 let particles = [];           // Row clear particle explosions
 let cellSize = 22;
 let gridLeft, gridTop;
+let clearingLines = [];       // Rows currently clearing (flashing)
+let clearAnimTimer = 0;       // Animation countdown for row clears
 
 function setup() {
     const container = document.getElementById('canvas-parent');
@@ -87,12 +89,20 @@ function draw() {
     // 1. Draw static grid box boundaries & matrix grid lines
     drawPlayBoardFrame(sizeW, sizeH);
 
-    // 2. Physics drop gravity ticks
+    // 2. Physics drop gravity ticks / clear animation freeze
     if (!isGameOver) {
-        let now = millis();
-        if (now - lastDropTime > dropInterval) {
-            movePieceDown();
-            lastDropTime = now;
+        if (clearAnimTimer > 0) {
+            clearAnimTimer--;
+            if (clearAnimTimer === 0) {
+                resolveLineClears();
+                spawnPiece();
+            }
+        } else {
+            let now = millis();
+            if (now - lastDropTime > dropInterval) {
+                movePieceDown();
+                lastDropTime = now;
+            }
         }
     }
 
@@ -100,7 +110,7 @@ function draw() {
     renderLockedBlocks();
 
     // 4. Draw active block + ghost guide projection block
-    if (currentPiece && !isGameOver) {
+    if (currentPiece && !isGameOver && clearAnimTimer === 0) {
         renderGhostPiece();
         renderActivePiece();
     }
@@ -146,6 +156,10 @@ function spawnPiece() {
     hasHeldThisTurn = false;
     lastDropTime = millis();
 
+    // Redraw previews
+    renderPreviewCanvas('next-container', nextPieceName);
+    renderPreviewCanvas('hold-container', heldPieceName);
+
     // Game Over collision check
     if (checkCollision(currentPiece.matrix, currentX, currentY)) {
         triggerGameOver();
@@ -159,7 +173,7 @@ function drawPlayBoardFrame(w, h) {
     rect(gridLeft, gridTop, w, h, 6);
 
     // Fine grid backdrop guides
-    stroke(255, 255, 255, 3);
+    stroke(255, 255, 255, 35); // Brighter grid guidelines
     strokeWeight(1);
     for (let c = 1; c < gridCols; c++) {
         line(gridLeft + c * cellSize, gridTop, gridLeft + c * cellSize, gridTop + h);
@@ -169,7 +183,7 @@ function drawPlayBoardFrame(w, h) {
     }
 
     // Border glowing framing lines
-    stroke(255, 255, 255, 8);
+    stroke(255, 255, 255, 75); // Brighter border frame
     noFill();
     rect(gridLeft, gridTop, w, h, 6);
 }
@@ -179,7 +193,12 @@ function renderLockedBlocks() {
         for (let c = 0; c < gridCols; c++) {
             let blockHue = board[r][c];
             if (blockHue > 0) {
-                drawNeonBlock(gridLeft + c * cellSize, gridTop + r * cellSize, blockHue, 255);
+                if (clearingLines.includes(r)) {
+                    let flashVal = Math.floor(millis() / 50) % 2 === 0;
+                    drawNeonBlock(gridLeft + c * cellSize, gridTop + r * cellSize, blockHue, 255, flashVal);
+                } else {
+                    drawNeonBlock(gridLeft + c * cellSize, gridTop + r * cellSize, blockHue, 255, false);
+                }
             }
         }
     }
@@ -228,19 +247,31 @@ function renderGhostPiece() {
     }
 }
 
-function drawNeonBlock(x, y, hueVal, opacity) {
+function drawNeonBlock(x, y, hueVal, opacity, isFlash = false) {
     colorMode(HSL, 360, 100, 100, 1.0);
     
-    // Ambient back glow
-    noStroke();
-    fill(hueVal, 90, 52, opacity / 255 * 0.18);
-    rect(x - 2, y - 2, cellSize + 4, cellSize + 4, 6);
+    if (isFlash) {
+        // High intensity neon white/cyan flash
+        noStroke();
+        fill(180, 100, 100, opacity / 255 * 0.4);
+        rect(x - 4, y - 4, cellSize + 8, cellSize + 8, 6);
 
-    // Main solid block fill
-    fill(hueVal, 85, 48, opacity / 255);
-    stroke(hueVal, 95, 75, opacity / 255);
-    strokeWeight(1.2);
-    rect(x + 1, y + 1, cellSize - 2, cellSize - 2, 4);
+        fill(180, 100, 95, opacity / 255);
+        stroke(180, 100, 100, opacity / 255);
+        strokeWeight(1.5);
+        rect(x + 1, y + 1, cellSize - 2, cellSize - 2, 4);
+    } else {
+        // Ambient back glow
+        noStroke();
+        fill(hueVal, 90, 52, opacity / 255 * 0.18);
+        rect(x - 2, y - 2, cellSize + 4, cellSize + 4, 6);
+
+        // Main solid block fill
+        fill(hueVal, 85, 48, opacity / 255);
+        stroke(hueVal, 95, 75, opacity / 255);
+        strokeWeight(1.2);
+        rect(x + 1, y + 1, cellSize - 2, cellSize - 2, 4);
+    }
 
     colorMode(RGB, 255, 255, 255, 255);
 }
@@ -294,14 +325,21 @@ function lockPiece() {
         }
     }
 
-    checkLineClears();
-    spawnPiece();
+    let lines = getFullLines();
+    if (lines.length > 0) {
+        clearingLines = lines;
+        clearAnimTimer = 15; // 15 frames of freeze/flash
+        // Trigger particle effects at cleared rows early
+        for (let r of lines) {
+            spawnClearParticles(r);
+        }
+    } else {
+        spawnPiece();
+    }
 }
 
-function checkLineClears() {
+function getFullLines() {
     let linesFound = [];
-    
-    // Scan board bottom to top
     for (let r = gridRows - 1; r >= 0; r--) {
         let isFull = true;
         for (let c = 0; c < gridCols; c++) {
@@ -314,48 +352,45 @@ function checkLineClears() {
             linesFound.push(r);
         }
     }
+    return linesFound;
+}
 
-    if (linesFound.length > 0) {
-        // Trigger particle effects at cleared rows
-        for (let r of linesFound) {
-            spawnClearParticles(r);
-        }
+function resolveLineClears() {
+    if (clearingLines.length === 0) return;
 
-        // Shift rows down
-        for (let r of linesFound) {
-            // Delete row
-            board.splice(r, 1);
-            // Prepend new empty row at top
-            board.unshift(Array(gridCols).fill(0));
-            // Adjust row indices offsets for subsequent loop items
-            for (let i = 0; i < linesFound.length; i++) {
-                if (linesFound[i] < r) linesFound[i]++;
-            }
-        }
-
-        // Scoring bonuses calculations
-        let pointsEarned = 0;
-        if (linesFound.length === 1) pointsEarned = 100 * level;
-        else if (linesFound.length === 2) pointsEarned = 300 * level;
-        else if (linesFound.length === 3) pointsEarned = 500 * level;
-        else if (linesFound.length >= 4) pointsEarned = 800 * level;
-
-        score += pointsEarned;
-        linesCleared += linesFound.length;
-        level = Math.floor(linesCleared / 10) + 1;
-        dropInterval = Math.max(100, 1000 - (level - 1) * 90); // accelerate fall speed
-
-        // Update score HUD
-        document.getElementById('score-val').textContent = formatScore(score);
-        document.getElementById('lines-val').textContent = linesCleared;
-        document.getElementById('level-val').textContent = level;
-
-        if (score > highscore) {
-            highscore = score;
-            localStorage.setItem('tetris_highscore', highscore);
-            document.getElementById('highscore-val').textContent = formatScore(highscore);
+    // Shift rows down
+    for (let r of clearingLines) {
+        board.splice(r, 1);
+        board.unshift(Array(gridCols).fill(0));
+        for (let i = 0; i < clearingLines.length; i++) {
+            if (clearingLines[i] < r) clearingLines[i]++;
         }
     }
+
+    // Scoring bonuses calculations
+    let pointsEarned = 0;
+    let count = clearingLines.length;
+    if (count === 1) pointsEarned = 100 * level;
+    else if (count === 2) pointsEarned = 300 * level;
+    else if (count === 3) pointsEarned = 500 * level;
+    else if (count >= 4) pointsEarned = 800 * level;
+
+    score += pointsEarned;
+    linesCleared += count;
+    level = Math.floor(linesCleared / 10) + 1;
+    dropInterval = Math.max(100, 1000 - (level - 1) * 90);
+
+    document.getElementById('score-val').textContent = formatScore(score);
+    document.getElementById('lines-val').textContent = linesCleared;
+    document.getElementById('level-val').textContent = level;
+
+    if (score > highscore) {
+        highscore = score;
+        localStorage.setItem('tetris_highscore', highscore);
+        document.getElementById('highscore-val').textContent = formatScore(highscore);
+    }
+
+    clearingLines = [];
 }
 
 function formatScore(num) {
@@ -378,9 +413,14 @@ function triggerHoldSwap() {
         };
         currentX = Math.floor((gridCols - currentPiece.matrix[0].length) / 2);
         currentY = 0;
+        
+        hasHeldThisTurn = true;
+        lastDropTime = millis();
+        
+        // Redraw previews
+        renderPreviewCanvas('next-container', nextPieceName);
+        renderPreviewCanvas('hold-container', heldPieceName);
     }
-
-    hasHeldThisTurn = true;
 }
 
 // Matrix Rotate Clockwise 90deg
@@ -551,5 +591,59 @@ function windowResized() {
     const container = document.getElementById('canvas-parent');
     if (container) {
         resizeCanvas(container.clientWidth, container.clientHeight);
+    }
+}
+
+// Render Next/Hold preview in HTML5 Canvas 2D contexts
+function renderPreviewCanvas(containerId, shapeName) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    
+    container.innerHTML = '';
+    if (!shapeName) return;
+    
+    const canvas = document.createElement('canvas');
+    canvas.width = 80;
+    canvas.height = 80;
+    canvas.style.display = 'block';
+    canvas.style.margin = '0 auto';
+    container.appendChild(canvas);
+    
+    const ctx = canvas.getContext('2d');
+    const shape = SHAPES[shapeName];
+    const hue = HUES[shapeName];
+    
+    const rows = shape.length;
+    const cols = shape[0].length;
+    const boxSize = 15;
+    
+    const px = (canvas.width - cols * boxSize) / 2;
+    const py = (canvas.height - rows * boxSize) / 2;
+    
+    ctx.shadowBlur = 8;
+    ctx.shadowColor = `hsla(${hue}, 90%, 52%, 0.5)`;
+    
+    for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+            if (shape[r][c] > 0) {
+                // Background glow
+                ctx.fillStyle = `hsla(${hue}, 85%, 48%, 0.2)`;
+                ctx.fillRect(px + c * boxSize - 1, py + r * boxSize - 1, boxSize + 2, boxSize + 2);
+                
+                // Solid block
+                ctx.fillStyle = `hsl(${hue}, 85%, 48%)`;
+                ctx.strokeStyle = `hsl(${hue}, 95%, 75%)`;
+                ctx.lineWidth = 1.2;
+                
+                ctx.beginPath();
+                if (ctx.roundRect) {
+                    ctx.roundRect(px + c * boxSize + 1, py + r * boxSize + 1, boxSize - 2, boxSize - 2, 3);
+                } else {
+                    ctx.rect(px + c * boxSize + 1, py + r * boxSize + 1, boxSize - 2, boxSize - 2);
+                }
+                ctx.fill();
+                ctx.stroke();
+            }
+        }
     }
 }

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Mancala - Classic Retro Arcade</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Style Sheet -->
+    <link rel="stylesheet" href="style.css">
+    <!-- p5.js Core -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+</head>
+<body>
+    <div class="game-wrapper">
+        <!-- Main Game Workspace -->
+        <main class="workspace">
+            <!-- Left Sidebar -->
+            <div class="side-hud left-hud glass">
+                <div class="hud-box">
+                    <h4>PLAYER 2 (AI)</h4>
+                    <span class="hud-value" id="ai-store-val">0</span>
+                    <p class="store-label">STORE SEEDS</p>
+                </div>
+                
+                <div class="hud-box">
+                    <h4>GAME STATUS</h4>
+                    <span class="hud-value status-neon" id="status-val">YOUR TURN</span>
+                </div>
+            </div>
+
+            <!-- Central Canvas Viewport -->
+            <div class="canvas-container glass" id="canvas-parent">
+                <div class="mode-badge"><i class="fa-solid fa-seedling"></i> NEON MANCALA</div>
+                
+                <!-- Game Over Overlay -->
+                <div class="game-over-overlay" id="game-over-screen">
+                    <h2 class="retro-blink" id="game-over-title">SIMULATION COMPLETE</h2>
+                    <p id="game-over-msg">Player 1 wins!</p>
+                    <button class="btn btn-primary" id="restart-btn-over"><i class="fa-solid fa-arrows-rotate"></i> SOW AGAIN</button>
+                </div>
+
+            </div>
+
+            <!-- Right Sidebar -->
+            <div class="side-hud right-hud glass">
+                <div class="hud-box">
+                    <h4>PLAYER 1 (YOU)</h4>
+                    <span class="hud-value" id="player-store-val">0</span>
+                    <p class="store-label">STORE SEEDS</p>
+                </div>
+
+                 <button class="btn btn-action" id="hint-btn" style="margin-bottom: 0.5rem; background: rgba(255, 159, 28, 0.08); border: 1px solid rgba(255, 159, 28, 0.2); color: var(--neon-cyan);">
+                    <i class="fa-solid fa-lightbulb"></i> GET ADVISORY
+                </button>
+
+                <button class="btn btn-action" id="rules-btn" onclick="document.getElementById('rules-modal').style.display='flex'" style="margin-bottom: 0.5rem; background: rgba(255, 159, 28, 0.08); border: 1px solid rgba(255, 159, 28, 0.2); color: var(--neon-cyan);">
+                    <i class="fa-solid fa-circle-question"></i> HOW TO PLAY
+                </button>
+
+                <button class="btn btn-primary" id="restart-btn">
+                    <i class="fa-solid fa-arrows-rotate"></i> REBOOT BOARD
+                </button>
+            </div>
+        </main>
+    </div>
+
+    <!-- Rules Modal Overlay -->
+    <div class="rules-modal glass" id="rules-modal">
+        <div class="rules-content">
+            <button class="rules-close" id="rules-close-btn" onclick="document.getElementById('rules-modal').style.display='none'">&times;</button>
+            <h3>Mancala Rules</h3>
+            <div class="rules-text">
+                <p><strong>1. Sowing:</strong> Click on one of your active bottom pits to lift all seeds and sow them counter-clockwise one-by-one.</p>
+                <p><strong>2. Store House:</strong> When sowing, a seed is placed in your right-side store. Skip the opponent's left store.</p>
+                <p><strong>3. Extra Turn:</strong> If your last sown seed lands exactly in your right-side store, you immediately receive another turn.</p>
+                <p><strong>4. Capture:</strong> If your last sown seed lands in an empty pit on your side, and the opposite opponent pit contains seeds, you capture all seeds from both pits.</p>
+            </div>
+            <a href="https://en.wikipedia.org/wiki/Mancala" target="_blank" class="btn btn-primary rules-link">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i> Full Wikipedia Rules
+            </a>
+        </div>
+    </div>
+
+    <!-- Simulation Code -->
+    <script src="sketch.js"></script>
+</body>
+</html>

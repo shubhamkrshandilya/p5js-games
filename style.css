@@ -7,7 +7,9 @@
     --neon-magenta: #ff007f;
     --neon-cyan: #00f2fe;
     --neon-blue: #3890ff;
-    --neon-green: #56d364;
+    --neon-green: #00ff66;
+    --neon-purple: #b026ff;
+    --neon-orange: #ff9f1c;
     
     --text-main: #f0f6fc;
     --text-muted: #8b949e;
@@ -185,6 +187,7 @@ body {
 }
 
 /* Glowing card frames */
+/* Glowing card frames */
 .card-magenta:hover {
     box-shadow: 0 12px 40px rgba(255, 0, 127, 0.08);
 }
@@ -194,6 +197,50 @@ body {
 .card-magenta .category-tag {
     color: var(--neon-magenta);
     background: rgba(255, 0, 127, 0.1);
+}
+
+.card-cyan:hover {
+    box-shadow: 0 12px 40px rgba(0, 242, 254, 0.08);
+}
+.card-cyan .card-icon, .card-cyan h3 {
+    color: var(--neon-cyan);
+}
+.card-cyan .category-tag {
+    color: var(--neon-cyan);
+    background: rgba(0, 242, 254, 0.1);
+}
+
+.card-green:hover {
+    box-shadow: 0 12px 40px rgba(0, 255, 102, 0.08);
+}
+.card-green .card-icon, .card-green h3 {
+    color: var(--neon-green);
+}
+.card-green .category-tag {
+    color: var(--neon-green);
+    background: rgba(0, 255, 102, 0.1);
+}
+
+.card-purple:hover {
+    box-shadow: 0 12px 40px rgba(176, 38, 255, 0.08);
+}
+.card-purple .card-icon, .card-purple h3 {
+    color: var(--neon-purple);
+}
+.card-purple .category-tag {
+    color: var(--neon-purple);
+    background: rgba(176, 38, 255, 0.1);
+}
+
+.card-orange:hover {
+    box-shadow: 0 12px 40px rgba(255, 159, 28, 0.08);
+}
+.card-orange .card-icon, .card-orange h3 {
+    color: var(--neon-orange);
+}
+.card-orange .category-tag {
+    color: var(--neon-orange);
+    background: rgba(255, 159, 28, 0.1);
 }
 
 .card-disabled {
@@ -233,10 +280,53 @@ body {
     color: #fff;
     box-shadow: 0 4px 15px rgba(255, 0, 127, 0.3);
 }
-
 .card-magenta .launch-btn:hover {
     background: #ff3399;
     box-shadow: 0 6px 20px rgba(255, 0, 127, 0.4);
+    transform: scale(1.02);
+}
+
+.card-cyan .launch-btn {
+    background: var(--neon-cyan);
+    color: #05070a;
+    box-shadow: 0 4px 15px rgba(0, 242, 254, 0.3);
+}
+.card-cyan .launch-btn:hover {
+    background: #33f5ff;
+    box-shadow: 0 6px 20px rgba(0, 242, 254, 0.4);
+    transform: scale(1.02);
+}
+
+.card-green .launch-btn {
+    background: var(--neon-green);
+    color: #05070a;
+    box-shadow: 0 4px 15px rgba(0, 255, 102, 0.3);
+}
+.card-green .launch-btn:hover {
+    background: #33ff85;
+    box-shadow: 0 6px 20px rgba(0, 255, 102, 0.4);
+    transform: scale(1.02);
+}
+
+.card-purple .launch-btn {
+    background: var(--neon-purple);
+    color: #fff;
+    box-shadow: 0 4px 15px rgba(176, 38, 255, 0.3);
+}
+.card-purple .launch-btn:hover {
+    background: #c052ff;
+    box-shadow: 0 6px 20px rgba(176, 38, 255, 0.4);
+    transform: scale(1.02);
+}
+
+.card-orange .launch-btn {
+    background: var(--neon-orange);
+    color: #05070a;
+    box-shadow: 0 4px 15px rgba(255, 159, 28, 0.3);
+}
+.card-orange .launch-btn:hover {
+    background: #ffb142;
+    box-shadow: 0 6px 20px rgba(255, 159, 28, 0.4);
     transform: scale(1.02);
 }
 
