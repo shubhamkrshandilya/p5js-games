@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Pente Grammai - Classic Retro Arcade</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Style Sheet -->
+    <link rel="stylesheet" href="style.css">
+    <!-- p5.js Core -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+</head>
+<body>
+    <div class="game-wrapper">
+        <!-- Main Game Workspace -->
+        <main class="workspace">
+            <!-- Left Sidebar -->
+            <div class="side-hud left-hud glass">
+                <div class="hud-box">
+                    <h4>SYSTEM STATUS</h4>
+                    <span class="hud-value status-neon" id="status-val">YOUR TURN</span>
+                </div>
+                
+                <div class="hud-box metrics-box">
+                    <h4>CAPTURED SHIELDS</h4>
+                    <p class="score-line">YOU (BLUE): <span class="hud-value" id="player-captures-val" style="color:var(--neon-cyan)">0</span></p>
+                    <p class="score-line">AI (RED): <span class="hud-value" id="ai-captures-val" style="color:var(--neon-magenta)">0</span></p>
+                </div>
+            </div>
+
+            <!-- Central Canvas Viewport -->
+            <div class="canvas-container glass" id="canvas-parent">
+                <div class="mode-badge"><i class="fa-solid fa-lines-leaning"></i> CYBER PENTE GRAMMAI</div>
+                
+                <!-- Game Over Overlay -->
+                <div class="game-over-overlay" id="game-over-screen">
+                    <h2 class="retro-blink" id="game-over-title">SIMULATION COMPLETE</h2>
+                    <p id="game-over-msg">Player 1 wins!</p>
+                    <button class="btn btn-primary" id="restart-btn-over"><i class="fa-solid fa-arrows-rotate"></i> PLAY AGAIN</button>
+                </div>
+            </div>
+
+            <!-- Right Sidebar -->
+            <div class="side-hud right-hud glass">
+                <div class="hud-box">
+                    <h4>GAME STATE</h4>
+                    <span class="hud-value" id="state-val" style="color:var(--neon-cyan)">PLACING</span>
+                </div>
+
+                <button class="btn btn-action" id="hint-btn" style="margin-bottom: 0.5rem; background: rgba(0, 255, 102, 0.08); border: 1px solid rgba(0, 255, 102, 0.2); color: var(--neon-green);">
+                    <i class="fa-solid fa-lightbulb"></i> GET ADVISORY
+                </button>
+
+                <button class="btn btn-action" id="rules-btn" onclick="document.getElementById('rules-modal').style.display='flex'" style="margin-bottom: 0.5rem; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-glass); color: var(--text-main);">
+                    <i class="fa-solid fa-circle-question"></i> HOW TO PLAY
+                </button>
+
+                <button class="btn btn-primary" id="restart-btn">
+                    <i class="fa-solid fa-arrows-rotate"></i> REBOOT MATRIX
+                </button>
+            </div>
+        </main>
+    </div>
+
+    <!-- Rules Modal Overlay -->
+    <div class="rules-modal glass" id="rules-modal">
+        <div class="rules-content">
+            <button class="rules-close" id="rules-close-btn" onclick="document.getElementById('rules-modal').style.display='none'">&times;</button>
+            <h3>Pente Grammai Rules</h3>
+            <div class="rules-text">
+                <p><strong>1. Goal:</strong> Position your pieces to capture opponent pieces or dominate the board. The first player to make 5 captures wins immediately.</p>
+                <p><strong>2. Board:</strong> The board consists of 5 parallel lines with 5 intersections on each line. The center line is the **Sacred Line**.</p>
+                <p><strong>3. Phase 1 (Placing):</strong> Players take turns placing their 5 pieces onto any empty intersection.</p>
+                <p><strong>4. Phase 2 (Moving):</strong> Once all pieces are placed, players take turns moving one of their pieces to an adjacent empty intersection orthogonally.</p>
+                <p><strong>5. Capturing:</strong> You capture an opponent's piece if you sandwich/custody it orthogonally between two of your pieces (similar to Hnefatafl captures).</p>
+            </div>
+            <a href="https://en.wikipedia.org/wiki/Pente_grammai" target="_blank" class="btn btn-primary rules-link">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i> Full Wikipedia Rules
+            </a>
+        </div>
+    </div>
+
+    <!-- Simulation Code -->
+    <script src="sketch.js"></script>
+</body>
+</html>

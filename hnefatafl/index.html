@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Hnefatafl - Classic Retro Arcade</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Style Sheet -->
+    <link rel="stylesheet" href="style.css">
+    <!-- p5.js Core -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+</head>
+<body>
+    <div class="game-wrapper">
+        <!-- Main Game Workspace -->
+        <main class="workspace">
+            <!-- Left Sidebar -->
+            <div class="side-hud left-hud glass">
+                <div class="hud-box">
+                    <h4>SYSTEM STATUS</h4>
+                    <span class="hud-value status-neon" id="status-val">YOUR TURN</span>
+                </div>
+                
+                <div class="hud-box metrics-box">
+                    <h4>CAPTURED ENEMIES</h4>
+                    <p class="score-line">ATTACKERS: <span class="hud-value" id="attackers-captured-val" style="color:var(--neon-magenta)">0</span></p>
+                    <p class="score-line">DEFENDERS: <span class="hud-value" id="defenders-captured-val" style="color:var(--neon-cyan)">0</span></p>
+                </div>
+            </div>
+
+            <!-- Central Canvas Viewport -->
+            <div class="canvas-container glass" id="canvas-parent">
+                <div class="mode-badge"><i class="fa-solid fa-shield-halved"></i> CYBER HNEFATAFL</div>
+                
+                <!-- Game Over Overlay -->
+                <div class="game-over-overlay" id="game-over-screen">
+                    <h2 class="retro-blink" id="game-over-title">SIMULATION COMPLETE</h2>
+                    <p id="game-over-msg">Defenders Escaped!</p>
+                    <button class="btn btn-primary" id="restart-btn-over"><i class="fa-solid fa-arrows-rotate"></i> PLAY AGAIN</button>
+                </div>
+            </div>
+
+            <!-- Right Sidebar -->
+            <div class="side-hud right-hud glass">
+                <div class="hud-box role-box">
+                    <h4>YOUR FACTION</h4>
+                    <span class="hud-value faction-neon" id="faction-val" style="color:var(--neon-cyan)">DEFENDERS</span>
+                </div>
+
+                <button class="btn btn-action" id="hint-btn" style="margin-bottom: 0.5rem; background: rgba(0, 255, 102, 0.08); border: 1px solid rgba(0, 255, 102, 0.2); color: var(--neon-green);">
+                    <i class="fa-solid fa-lightbulb"></i> GET ADVISORY
+                </button>
+
+                <button class="btn btn-action" id="rules-btn" onclick="document.getElementById('rules-modal').style.display='flex'" style="margin-bottom: 0.5rem; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-glass); color: var(--text-main);">
+                    <i class="fa-solid fa-circle-question"></i> HOW TO PLAY
+                </button>
+
+                <button class="btn btn-primary" id="restart-btn">
+                    <i class="fa-solid fa-arrows-rotate"></i> REBOOT MATRIX
+                </button>
+            </div>
+        </main>
+    </div>
+
+    <!-- Rules Modal Overlay -->
+    <div class="rules-modal glass" id="rules-modal">
+        <div class="rules-content">
+            <button class="rules-close" id="rules-close-btn" onclick="document.getElementById('rules-modal').style.display='none'">&times;</button>
+            <h3>Hnefatafl Rules (11x11)</h3>
+            <div class="rules-text">
+                <p><strong>1. Asymmetry:</strong> One player controls the Defenders (including the gold King in the center), and the other controls the Attackers surrounding them. You play as the Defenders.</p>
+                <p><strong>2. Movement:</strong> Any piece can move any number of empty squares orthogonally (horizontal or vertical, like a Rook in Chess).</p>
+                <p><strong>3. Restricted Squares:</strong> Only the King can stand on the central Throne or the four corner Escape squares.</p>
+                <p><strong>4. Capture:</strong> An enemy piece is captured when sandwiched horizontally or vertically between two of your pieces (or one piece and an Escape corner/Throne).</p>
+                <p><strong>5. Winning:</strong> Defenders win if the King reaches any of the four corner Escape squares. Attackers win if they surround the King on all 4 sides (or 3 sides if against the Throne or edge).</p>
+            </div>
+            <a href="https://en.wikipedia.org/wiki/Tafl_games" target="_blank" class="btn btn-primary rules-link">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i> Full Wikipedia Rules
+            </a>
+        </div>
+    </div>
+
+    <!-- Simulation Code -->
+    <script src="sketch.js"></script>
+</body>
+</html>

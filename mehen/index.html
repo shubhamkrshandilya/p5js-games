@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Mehen - Classic Retro Arcade</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Style Sheet -->
+    <link rel="stylesheet" href="style.css">
+    <!-- p5.js Core -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+</head>
+<body>
+    <div class="game-wrapper">
+        <!-- Main Game Workspace -->
+        <main class="workspace">
+            <!-- Left Sidebar -->
+            <div class="side-hud left-hud glass">
+                <div class="hud-box">
+                    <h4>SYSTEM STATUS</h4>
+                    <span class="hud-value status-neon" id="status-val">YOUR TURN</span>
+                </div>
+                
+                <div class="hud-box metrics-box">
+                    <h4>HUNTERS & PREY</h4>
+                    <p class="score-line">YOUR ACTIVE: <span class="hud-value" id="player-active-val" style="color:var(--neon-cyan)">3</span></p>
+                    <p class="score-line">YOUR LIONS: <span class="hud-value" id="player-lions-val" style="color:var(--neon-green)">0</span></p>
+                    <hr style="border: 0; border-top: 1px solid var(--border-glass); margin: 0.5rem 0;">
+                    <p class="score-line">AI ACTIVE: <span class="hud-value" id="ai-active-val" style="color:var(--neon-magenta)">3</span></p>
+                    <p class="score-line">AI LIONS: <span class="hud-value" id="ai-lions-val" style="color:var(--neon-magenta)">0</span></p>
+                </div>
+            </div>
+
+            <!-- Central Canvas Viewport -->
+            <div class="canvas-container glass" id="canvas-parent">
+                <div class="mode-badge"><i class="fa-solid fa-scroll"></i> CYBER MEHEN (SNAKE)</div>
+                
+                <!-- Game Over Overlay -->
+                <div class="game-over-overlay" id="game-over-screen">
+                    <h2 class="retro-blink" id="game-over-title">SIMULATION COMPLETE</h2>
+                    <p id="game-over-msg">You Escaped all pieces!</p>
+                    <button class="btn btn-primary" id="restart-btn-over"><i class="fa-solid fa-arrows-rotate"></i> PLAY AGAIN</button>
+                </div>
+            </div>
+
+            <!-- Right Sidebar -->
+            <div class="side-hud right-hud glass">
+                <div class="hud-box sticks-box">
+                    <h4>CAST STICKS</h4>
+                    <span class="hud-value" id="roll-val" style="color:var(--neon-cyan)">--</span>
+                    <button class="btn btn-primary" id="roll-btn" style="width: 100%; margin-top: 0.75rem;">
+                        <i class="fa-solid fa-grip-lines-vertical"></i> CAST STICKS
+                    </button>
+                </div>
+
+                <button class="btn btn-action" id="hint-btn" style="margin-bottom: 0.5rem; background: rgba(0, 255, 102, 0.08); border: 1px solid rgba(0, 255, 102, 0.2); color: var(--neon-green);">
+                    <i class="fa-solid fa-lightbulb"></i> GET ADVISORY
+                </button>
+
+                <button class="btn btn-action" id="rules-btn" onclick="document.getElementById('rules-modal').style.display='flex'" style="margin-bottom: 0.5rem; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-glass); color: var(--text-main);">
+                    <i class="fa-solid fa-circle-question"></i> HOW TO PLAY
+                </button>
+
+                <button class="btn btn-primary" id="restart-btn">
+                    <i class="fa-solid fa-arrows-rotate"></i> REBOOT MATRIX
+                </button>
+            </div>
+        </main>
+    </div>
+
+    <!-- Rules Modal Overlay -->
+    <div class="rules-modal glass" id="rules-modal">
+        <div class="rules-content">
+            <button class="rules-close" id="rules-close-btn" onclick="document.getElementById('rules-modal').style.display='none'">&times;</button>
+            <h3>Mehen Rules (Snake Spiral)</h3>
+            <div class="rules-text">
+                <p><strong>1. Spiral Race:</strong> Players each control 3 normal marble pieces. Cast sticks (sums 1-5, with extra turns on 1, 4, 5) to move your pieces from the snake's tail (outermost space) along the spiral to the head (center space).</p>
+                <p><strong>2. Lion Transformation:</strong> Once a piece reaches the snake's head (center), it transforms into a **Lion** (Hunter piece).</p>
+                <p><strong>3. The Hunt:</strong> On subsequent turns, your Lion travels **backwards** from the head to the tail. The Lion captures (eats) any opponent normal pieces it lands on or passes over, removing them permanently from the game.</p>
+                <p><strong>4. Win Condition:</strong> Win by either escaping your own pieces/Lions or capturing all opponent pieces with your Lions.</p>
+            </div>
+            <a href="https://en.wikipedia.org/wiki/Mehen_(game)" target="_blank" class="btn btn-primary rules-link">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i> Full Wikipedia Rules
+            </a>
+        </div>
+    </div>
+
+    <!-- Simulation Code -->
+    <script src="sketch.js"></script>
+</body>
+</html>
